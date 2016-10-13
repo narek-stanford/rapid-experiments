@@ -6,4 +6,6 @@
 3. "softPLUS" activation function aced! (better than logistic/sigmoid, ReLU, softsign, TanH, in this order!)
 
 
-Achieved above-80% test accuracy!!
+The newswire_topics module is now well documented (following proper python docstring conventions.)
+
+Upping the maximum number of words from 1000 to 7000 improved the test accuracy even more above-80%!
