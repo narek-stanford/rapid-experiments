@@ -11,6 +11,9 @@ Output: exactly 10 topic (integer id) suggestions (ordered by relevance) for eac
 def get_topics(q):
 	pass
 
+def get_guesses(q):
+	pass
+
 def score(q, G):
 	topics = get_topics(q)
 	numer = sum(math.sqrt(10-i) if G[i] in topics else 0 for i in range(10))
@@ -20,7 +23,7 @@ def score(q, G):
 	return ratio
 
 def raw_score(Q):
-	return sum(score(q) for q in Q)
+	return sum(score(q, get_guesses(q)) for q in Q)
 
 
 def main():
