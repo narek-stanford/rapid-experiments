@@ -5,26 +5,26 @@ from theano import tensor as T
 from theano import function # shared, pp
 
 
-class MyTest(ut.TestCase):
+class CustomLossTest(ut.TestCase):
 
 	def setUp(self):
 		self.x = T.dvector()
 		self.ret = custom_loss(None, self.x)
-		self.f = function([self.x], self.ret)
+		self.lossFun = function([self.x], self.ret)
 
 	def test(self):
 		probs = np.array([0.5, 0.3, 0.2], dtype='float64')
-		self.assertTrue(self.f(probs) == 0.0)
+		self.assertTrue( self.lossFun(probs) == 0.0 )
 
 	def test1(self):
 		probs = np.array([1., 0, 0])
-		self.assertTrue( self.f(probs) == 0.0 )
+		self.assertTrue( self.lossFun(probs) == 0.0 )
 
 	def test_equal_probabilities(self):
 		probs = np.array([0.25, 0.25, 0.25, 0.25])
 		print('Return symbol, class, type:',self.ret,type(self.ret),self.ret.type)
 		# print(pp(self.ret))
-		self.assertTrue(self.f(probs) == 1.00)
+		self.assertTrue( self.lossFun(probs) == 1.00 )
 
 
 def custom_loss(y_true, probs):
