@@ -63,35 +63,41 @@ def main():
 	(X_train, Y_train), (X_test, Y_test) = load_vect_mat()
 
 	print('\nBuilding model...')
-	model = Sequential([
+	model0 = Sequential([
 		Dense(256, input_dim=max_words),
 		Activation('softplus'), # the antiderivative of 'sigmoid'!
 		Dropout(0.5),
 		Dense(nb_classes),
 		Activation('softmax')
 	])
+	model1 = Sequential()
+	model1.add(	Dense(256, input_dim=max_words))#, init='uniform')	)
+	model1.add(Activation('softplus'))
+	model1.add(Dropout(0.5))
+	model1.add(	Dense(256))#, init='uniform') )
+	model1.add(Activation('tanh'))
+	model1.add(Dropout(0.4))
+	model1.add( Dense(nb_classes) )
+	model1.add(Activation('softmax'))
+
 	print("Summary of the model:")
-	model.summary()
+	model1.summary()
 	# the JSON representation of the model
-	jsonStr = model.to_json()
+	jsonStr = model1.to_json()
 	print(jsonStr)
 	print()
 	import json
 	model_json = json.loads(jsonStr)
-	json.dump(model_json, open('reuters_mlp.json', 'wb'), indent=3)
+	json.dump(model_json, open('reuters_mlp1.json', 'wb'), indent=3)
 
 	from keras.optimizers import SGD
 	sgd = SGD(lr=0.01, decay=1e-6, momentum=0.9, nesterov=True)
 	# ended up turning off the 'sgd' solver..
-	#model.compile(loss='categorical_crossentropy', optimizer=sgd, metrics=['accuracy'])
-	model.compile(loss='categorical_crossentropy', optimizer='Adam', metrics=['accuracy'])
+	model1.compile(loss='categorical_crossentropy', optimizer='Adam', metrics=['accuracy'])
 
-
-	batch_size = 32
 	nb_epoch = 7
-
-	model.fit(X_train, Y_train, nb_epoch=nb_epoch, validation_split=0.1)
-	score = model.evaluate(X_test, Y_test)
+	model1.fit(X_train, Y_train, nb_epoch=nb_epoch, validation_split=0.1)
+	score = model1.evaluate(X_test, Y_test)
 	print('\nTest score:', score[0])
 	print('Test accuracy:', score[1])
 
