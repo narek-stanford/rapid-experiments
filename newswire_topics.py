@@ -90,8 +90,8 @@ def main():
 	batch_size = 32
 	nb_epoch = 7
 
-	model.fit(X_train, Y_train, nb_epoch=nb_epoch, batch_size=batch_size, validation_split=0.1)#, shuffle=False)
-	score = model.evaluate(X_test, Y_test, batch_size=batch_size)
+	model.fit(X_train, Y_train, nb_epoch=nb_epoch, validation_split=0.1)
+	score = model.evaluate(X_test, Y_test)
 	print('\nTest score:', score[0])
 	print('Test accuracy:', score[1])
 
