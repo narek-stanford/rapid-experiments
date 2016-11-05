@@ -47,22 +47,3 @@ def custom_loss(y_true, probs):
 
 
 
-
-
-
-
-def custom_loss0(probs, y_true=None):
-	tupSize = probs.size + 1
-	target = probs[0] * np.ones_like(probs)
-	print('Repeated p1:',target)
-
-	count = 0
-	for i in range(1, tupSize-1):
-		if (target[i] <= probs[i]):
-			count += 1
-	frac_loss = count*1.0/(tupSize-2)
-	print('Frac. loss:',frac_loss)
-	return frac_loss
-
-
-
