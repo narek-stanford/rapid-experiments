@@ -5,7 +5,7 @@ from keras.models import load_model, Model
 from keras.layers import Input, Dense
 import numpy as np
 import h5py
-import os
+from os import path
 import csv
 
 
@@ -13,8 +13,7 @@ def csv_contents2list_of_tuples(CSV_filename):
 	with open(CSV_filename) as of:
 		lots = list(tuple(line) for line in csv.reader(of, delimiter=','))
 	return lots
-LOT = csv_contents2list_of_tuples(os.path.expanduser('~')+"/Desktop/VI/skechers_all_shoes_train.csv")
-print LOT
+# LOT = csv_contents2list_of_tuples(path.expanduser('~')+"/Desktop/VI/skechers_all_shoes_train.csv")
 
 
 
