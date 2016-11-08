@@ -20,17 +20,27 @@ print('Total number of tuples:',len(LOT))
 tupSize = len(LOT[0])
 print('Each tuple is a '+str(tupSize)+'-tuplet')
 
-chunkSize = 7
-nb_sample = chunkSize*14
+chunkSize = 4
+nb_sample = chunkSize*10
 screens = LOT[:nb_sample]
-print(screens)
+# print(screens)
 
 
 def generate_chunks(sample_tuples):
-	for chunk_index in range(len(sample_tuples)/chunkSize):
-		st,upto = chunk_index*chunkSize, (chunk_index+1)*chunkSize
-		curChunk = screens[st:upto]
-		yield curChunk
+	while True:
+		for chunk_index in range(len(sample_tuples)/chunkSize):
+			st,upto = chunk_index*chunkSize, (chunk_index+1)*chunkSize
+			curChunk = sample_tuples[st:upto]
+			yield curChunk
+myGenerator = generate_chunks(screens)
+
+num_times_to_get = 7
+idx = 0
+while idx < num_times_to_get:
+	print('Get chunk:')
+	thisChunk = next(myGenerator)
+	print(thisChunk)
+	idx += 1
 
 
 def preprocess(X, y):
