@@ -1,4 +1,5 @@
 
+from __future__ import print_function
 import numpy as np
 from keras.utils import np_utils
 from keras.models import load_model, Model
@@ -11,11 +12,25 @@ import csv
 
 def csv_contents2list_of_tuples(CSV_filename):
 	with open(CSV_filename) as of:
+		# stands for 'list of tuples'..
 		lots = list(tuple(line) for line in csv.reader(of, delimiter=','))
 	return lots
-# LOT = csv_contents2list_of_tuples(path.expanduser('~')+"/Desktop/VI/skechers_all_shoes_train.csv")
+LOT = csv_contents2list_of_tuples(path.expanduser('~')+"/Desktop/VI/skechers_all_shoes_train.csv")
+print('Total number of tuples:',len(LOT))
+tupSize = len(LOT[0])
+print('Each tuple is a '+str(tupSize)+'-tuplet')
+
+chunkSize = 7
+nb_sample = chunkSize*14
+screens = LOT[:nb_sample]
+print(screens)
 
 
+def generate_chunks(sample_tuples):
+	for chunk_index in range(len(sample_tuples)/chunkSize):
+		st,upto = chunk_index*chunkSize, (chunk_index+1)*chunkSize
+		curChunk = screens[st:upto]
+		yield curChunk
 
 
 def preprocess(X, y):
@@ -54,3 +69,8 @@ with h5py.File('data.h5', 'w') as hf:
  
     g2 = hf.create_group('grp2/sgrp')
     g2.create_dataset('dset2', data=m2, compression="gzip", compression_opts=9)
+
+
+
+
+
