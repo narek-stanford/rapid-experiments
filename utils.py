@@ -8,6 +8,12 @@ import numpy as np
 import h5py
 from os import path
 import csv
+import glob
+from keras.preprocessing import image
+
+
+jpgs = glob.glob('*.jpg')
+resized_images = {j: image.load_img(j, target_size=(600,600)) for j in jpgs}
 
 
 def csv_contents2list_of_tuples(CSV_filename):
