@@ -10,6 +10,7 @@ from os import path
 import csv
 import glob
 from keras.preprocessing import image
+from keras.models import model_from_json
 
 
 jpgs = glob.glob('*.jpg')
@@ -74,6 +75,14 @@ def precompute_means(images_to_arrays, backend="tf"):
 
 
 
+def load_for_resuming(modelName, model_json_string):
+	trainedModel = model_from_json(model_json_string)
+
+	h5Files = glob.glob("results/"+modelName+"_weights*.hdf5")
+	latest = max(h5Files)
+	print('Loading...',latest)
+
+	trainedModel.load_weights(latest)
 
 def returnIdentical(model):
 	model.save('my_model.h5')
