@@ -27,6 +27,19 @@ class CustomLossTest(ut.TestCase):
 		self.assertTrue( self.lossFun(probs) == 1.00 )
 
 
+
+def easy_custom_loss(y_true, probs):
+	tupSize = probs.size + 1
+	target = probs[0] * np.ones_like(probs)
+
+	count = 0
+	for i in range(1, tupSize-1):
+		if (target[i] < probs[i]):
+			count += 1
+
+	frac_loss = count*1.0/(tupSize-2)
+	return frac_loss
+
 def custom_loss(y_true, probs):
 	onesLike = T.ones_like(probs)
 	print('ones be like!:',onesLike)
