@@ -62,7 +62,7 @@ y = np.zeros(len(X))
 preprocess(X, y)
 
 
-def precompute_mean_n_std(images_to_arrays, backend="tf"):
+def precompute_stats(images_to_arrays, backend="tf"):
 	Array = np.array(all_images_to_arrays.values())
 
 	if backend == "tf":

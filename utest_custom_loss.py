@@ -10,15 +10,18 @@ class EasyCustomLossTest(ut.TestCase):
 	def test0(self):
 		y_true = np.array([1, 0])
 		y_pred = np.array([0.51, 0.49])
-		self.assertTrue(easy_custom_loss(y_true, y_pred) == 0)
+		self.assertTrue(tripLoss(y_true, y_pred) == 0)
 
 	def test1(self):
 		y_true = np.array([1, 0])
 		y_pred = np.array([0.49, 0.51])
-		self.assertEquals(easy_custom_loss(y_true, y_pred), 1.0)
+		self.assertEquals(tripLoss(y_true, y_pred), 1.0)
 
 
-def easy_custom_loss(y_true, probs):
+"""
+'triplet' loss function..
+"""
+def tripLoss(y_true, probs):
 	tupSize = probs.size + 1
 	target = probs[0] * np.ones_like(probs)
 
