@@ -62,23 +62,27 @@ y = np.zeros(len(X))
 preprocess(X, y)
 
 
-def precompute_means(images_to_arrays, backend="tf"):
+def precompute_mean_n_std(images_to_arrays, backend="tf"):
 	Array = np.array(all_images_to_arrays.values())
 
 	if backend == "tf":
 		means = np.mean(Array, axis=(0,1,2))
 	else:# backend == "th"
 		means = np.mean(Array, axis=(0,2,3))
-
 	print('Mean values to be subtracted:',means)
-	return means
+
+	oneUnifiedMean = sum(means)/3
+	stddev = np.std(Array)
+	print('Single standard deviation value to be divided by:',stddev)
+
+	return (oneUnifiedMean, stddev)
 
 
 
 def load_for_resuming(modelName, model_json_string):
 	trainedModel = model_from_json(model_json_string)
 
-	h5Files = glob.glob("results/"+modelName+"_weights*.hdf5")
+	h5Files = glob.glob(modelName+"_weights*.hdf5")
 	latest = max(h5Files)
 	print('Loading...',latest)
 
