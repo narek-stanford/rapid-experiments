@@ -5,6 +5,33 @@ from theano import tensor as T
 from theano import function # shared, pp
 
 
+class EasyCustomLossTest(ut.TestCase):
+
+	def test0(self):
+		y_true = np.array([1, 0])
+		y_pred = np.array([0.51, 0.49])
+		self.assertTrue(easy_custom_loss(y_true, y_pred) == 0)
+
+	def test1(self):
+		y_true = np.array([1, 0])
+		y_pred = np.array([0.49, 0.51])
+		self.assertEquals(easy_custom_loss(y_true, y_pred), 1.0)
+
+
+def easy_custom_loss(y_true, probs):
+	tupSize = probs.size + 1
+	target = probs[0] * np.ones_like(probs)
+
+	count = 0
+	for i in range(1, tupSize-1):
+		if (target[i] < probs[i]):
+			count += 1
+
+	frac_loss = count*1.0/(tupSize-2)
+	return frac_loss
+
+
+
 class CustomLossTest(ut.TestCase):
 
 	def setUp(self):
@@ -27,18 +54,6 @@ class CustomLossTest(ut.TestCase):
 		self.assertTrue( self.lossFun(probs) == 1.00 )
 
 
-
-def easy_custom_loss(y_true, probs):
-	tupSize = probs.size + 1
-	target = probs[0] * np.ones_like(probs)
-
-	count = 0
-	for i in range(1, tupSize-1):
-		if (target[i] < probs[i]):
-			count += 1
-
-	frac_loss = count*1.0/(tupSize-2)
-	return frac_loss
 
 def custom_loss(y_true, probs):
 	onesLike = T.ones_like(probs)
