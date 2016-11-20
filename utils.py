@@ -11,6 +11,7 @@ import csv
 import glob
 from keras.preprocessing import image
 from keras.models import model_from_json
+from random import shuffle
 
 
 jpgs = glob.glob('*.jpg')
@@ -22,8 +23,11 @@ def csv_contents2list_of_tuples(CSV_filename):
 		# stands for 'list of tuples'..
 		lots = list(tuple(line) for line in csv.reader(of, delimiter=','))
 	return lots
+
 LOT = csv_contents2list_of_tuples(path.expanduser('~')+"/Desktop/VI/skechers_all_shoes_train.csv")
 print('Total number of tuples:',len(LOT))
+shuffle(LOT)
+
 tupSize = len(LOT[0])
 print('Each tuple is a '+str(tupSize)+'-tuplet')
 
