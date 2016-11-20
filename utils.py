@@ -16,6 +16,7 @@ from random import shuffle
 
 jpgs = glob.glob('*.jpg')
 resized_images = {j: image.load_img(j, target_size=(600,600)) for j in jpgs}
+jpgs_to_arrays = {jp: image.img_to_array( resized_images[jp] )/255.0 for jp in jpgs}
 
 
 def csv_contents2list_of_tuples(CSV_filename):
@@ -43,6 +44,7 @@ def generate_chunks(sample_tuples):
 			st,upto = chunk_index*chunkSize, (chunk_index+1)*chunkSize
 			curChunk = sample_tuples[st:upto]
 			yield curChunk
+		shuffle(sample_tuples)
 myGenerator = generate_chunks(screens)
 
 num_times_to_get = 7
