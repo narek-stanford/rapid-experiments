@@ -30,6 +30,15 @@ class EasyCustomLossTest(ut.TestCase):
 		y_pred = np.array([0.00815684, 0.00174302, 0.08007631, 0.44599351, 0.24698456, 0.0080792, 0.20896657])
 		self.assertEquals(tripLoss(None, y_pred), 4.0/6)
 
+	def test5(self):
+		y_pred = np.array([0.42964047, 0.09830756, 0.02956098, 0.00546289, 0.23634611, 0.16712381, 0.0335582])
+		self.assertEquals(tripLoss(None, y_pred), 0.0)
+
+	def test6(self):
+		y_pred = np.array([0.62118435, 0.00773507, 0.00358265, 0.12697484, 0.04129191, 0.02324188, 0.17598929])
+		self.assertEquals(tripLoss(None, y_pred), 0.0)
+
+
 """
 'triplet' loss function..
 """
