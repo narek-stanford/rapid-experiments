@@ -12,6 +12,43 @@ import glob
 from keras.preprocessing import image
 from keras.models import model_from_json
 from random import shuffle
+import random
+from keras import backend as K
+
+
+def euclidean_distance(vects):
+    x, y = vects
+    dist = K.sqrt(K.sum(K.square(x - y), axis=1, keepdims=True))
+    return dist
+def eucl_dist_output_shape(shapes):
+	aShape = shapes[0]
+	# return (None, 1)
+	return (aShape[0], 1)
+
+def contrastive_loss(y_true, y_pred):
+    margin = 1
+    loss = K.mean( y_true*K.square(y_pred) + (1 - y_true)*K.square(K.maximum(margin - y_pred, 0)) )
+    return loss
+
+def create_pairs(x, digit_indices):
+    '''Positive and negative pair creation.
+    Alternates between positive and negative pairs.
+    '''
+    pairs = []
+    labels = []
+    n = min([len(digit_indices[d]) for d in range(10)]) - 1
+    for d in range(10):
+        for i in range(n):
+            z1, z2 = digit_indices[d][i], digit_indices[d][i+1]
+            pairs += [[x[z1], x[z2]]]
+            inc = random.randrange(1, 10)
+            dn = (d + inc) % 10
+            z1, z2 = digit_indices[d][i], digit_indices[dn][i]
+            pairs += [[x[z1], x[z2]]]
+            labels += [1, 0]
+    return np.array(pairs), np.array(labels)
+
+
 
 
 jpgs = glob.glob('*.jpg')
