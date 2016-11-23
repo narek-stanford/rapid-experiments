@@ -5,6 +5,9 @@ from base_network import BaseNetwork
 from keras.models import Model
 from utils import euclidean_distance, eucl_dist_output_shape
 import json
+import numpy as np
+from utils import preproc
+import pandas as pd
 
 
 # the data, shuffled and split between train and test sets
@@ -32,5 +35,32 @@ distance = Lambda(euclidean_distance, output_shape=eucl_dist_output_shape)([out_
 super_model = Model(input=[inp_a, inp_b], output=distance)
 
 jsonStr = super_model.to_json()
-modelJson = json.loads(jsonStr)
-json.dump(modelJson, open("siamese.json", 'wb'), indent=4)
+json.dump( json.loads(jsonStr), open("siamese.json", 'wb'), indent=4 )
+
+
+lambLayer = super_model.layers[-1]
+seqModel = super_model.layers[-2]
+
+
+
+
+
+
+
+def get_embedding(singleImage):
+	out = seqModel.predict( np.array([preproc(singleImage)]) )
+	return out
+
+embs = {}
+curDirJpgs = ['pic_132008.jpg']
+for _ in curDirJpgs:
+	em = get_embedding(_)
+	em = em[0]
+	embs[_] = em
+
+df = pd.DataFrame.from_dict(embs, 'index')
+df.to_csv('embeddings.csv', header=False)
+#pickle.dump( embs, open("embeddings.p", "wb") )
+
+
+

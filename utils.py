@@ -93,6 +93,14 @@ while idx < num_times_to_get:
 	idx += 1
 
 
+def preproc(img):
+	im = image.load_img(img)
+	arr = image.img_to_array(im)
+	arr /= 255.0
+	arr -= 0.799
+	arr /= 0.310
+	return arr
+
 def preprocess(X, y):
 	# converting RGB -> BGR
 	X = X[[2,1,0], :,:]
