@@ -3,6 +3,7 @@ from __future__ import print_function
 import seaborn as sn
 import matplotlib.pyplot as plt
 import glob
+import pandas as pd
 
 
 def get_epochNo_to_lossVal(weights_hdf5_filenames):
@@ -17,5 +18,7 @@ def get_epochNo_to_lossVal(weights_hdf5_filenames):
 lossRecords = glob.glob("*.hdf5")
 en2lv = get_epochNo_to_lossVal(lossRecords)
 
-#plt.plot(en2lv.keys(), en2lv.values())
 
+df = pd.DataFrame.from_dict(en2lv, 'index')
+df.plot()
+plt.show()
