@@ -6,7 +6,11 @@ import glob
 
 
 def get_epochNo_to_lossVal(weights_hdf5_filenames):
-	dd = {int(fname[fname.find('.')+1:fname.find('-')]): float(fname[fname.find('-')+1:fname.rfind('.')]) for fname in weights_hdf5_filenames}
+	dd = {}
+	for fname in weights_hdf5_filenames:
+		key = int(fname[fname.find('.')+1:fname.find('-')])
+		val = float(fname[fname.find('-')+1:fname.rfind('.')])
+		dd[key] = val
 	print(dd)
 	return dd
 
