@@ -4,12 +4,13 @@ from keras.layers import Dropout, Dense
 
 
 def BaseNetwork(input_dim):
-    seq = Sequential()
-    seq.add( Dense(128, input_shape=(input_dim,), activation='relu') )
-    seq.add(Dropout(0.1))
-    seq.add( Dense(128, activation='relu') )
-    seq.add(Dropout(0.1))
-    seq.add( Dense(128, activation='relu') )
+    seq = Sequential([
+        Dense(128, input_shape=(input_dim,), activation='relu'),
+        Dropout(0.1),
+        Dense(128, activation='relu'),
+        Dropout(0.1),
+        Dense(128, activation='relu')
+    ])
     return seq
 
 
