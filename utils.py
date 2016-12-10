@@ -113,20 +113,34 @@ y = np.zeros(len(X))
 preprocess(X, y)
 
 
-def precompute_stats(images_to_arrays, backend="tf"):
+def precompute_stats(noRows, noCols, images_to_arrays={}, backend="tf"):
 	Array = np.array(all_images_to_arrays.values())
+    jpegs = {jp.split('/')[-1] for jp in glob.glob(dataDir+'*.jpg')}
+
+    Array = np.empty(shape=(len(jpegs),noRows,noCols,3))
 
 	if backend == "tf":
 		means = np.mean(Array, axis=(0,1,2))
 	else:# backend == "th"
 		means = np.mean(Array, axis=(0,2,3))
-	print('Mean values to be subtracted:',means)
 
-	oneUnifiedMean = sum(means)/3
+	oneUnifiedMean = sum(means)/(3*255.0)
 	stddev = np.std(Array)
-	print('Single standard deviation value to be divided by:',stddev)
 
 	return (oneUnifiedMean, stddev)
+
+
+def write_std_to_tmp(noRows, noCols):
+    sizesKey=(str(noRows),str(noCols))
+    res = [tuple(row) for row in csv.reader(open(dataDir+"tmp.csv"), delimiter=',') if tuple(row)[:2]==sizesKey]
+    
+    szs=(noRows,noCols)
+    std = precompute_stats(noRows, noCols)[-1]/255.0
+
+    fields = map(str, list(szs)) + [str(std)]
+    with open(dataDir+"tmp.csv", 'ab') as fp:
+        writer = csv.writer(fp)
+        writer.writerow(fields)
 
 
 
